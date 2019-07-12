@@ -15,7 +15,7 @@
     </main>
   </div>
 </template>
-<!-- Start from 20 lesson-->
+<!-- Start from 22, 21- check the end lesson-->
 <script>
 // import HomePage from './home/HomePage.vue';
 import RobotBuilder from './build/RobotBuilder.vue';
