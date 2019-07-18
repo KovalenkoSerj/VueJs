@@ -1,6 +1,13 @@
 <template>
   <div class="part" :class='position'>
-    <img :src="selectedPart.src" title="arm"/>
+    <router-link :to="{
+        name: 'Parts',
+        params: {
+          id: this.selectedPart.id,
+          partType: this.selectedPart.type,
+        }}">
+      <img :src="selectedPart.src" title="arm"/>
+    </router-link>
     <button @click="selectPreviousPart()" class="prev-selector"></button>
     <button @click="selectNextPart()" class="next-selector"></button>
     <span class="sale" v-show="selectedPart.onSale">Sale!</span>
@@ -8,7 +15,7 @@
 </template>
 
 <script>
-
+//  --- lesson 39
 function getPreviousValidIndex(index, length) {
   const deprecatedIndex = index - 1;
   return deprecatedIndex < 0 ? length - 1 : deprecatedIndex;
@@ -47,6 +54,14 @@ export default {
     this.emitSelectedPart();
   },
   methods: {
+    showPartInfo() {
+      this.$router.push({
+        name: 'Parts',
+        params: {
+          id: this.selectedPart.id, partType: this.selectedPart.type,
+        },
+      });
+    },
     emitSelectedPart() {
       this.$emit('partSelected', this.selectedPart);
     },
@@ -94,6 +109,7 @@ export default {
 }
 .part img {
   width:165px;
+  cursor: pointer;
 }
 .top {
   border-bottom: none;

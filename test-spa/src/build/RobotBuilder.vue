@@ -1,51 +1,59 @@
 <template>
-  <div class='content'>
-        <div class="preview">
-      <div class="preview-content">
-        <div class="top-row">
-          <img :src="selectedRobot.head.src"/>
+  <div class="content">
+    <div class="preview">
+      <CollapsSection></CollapsSection>
+      <CollapsSection>
+        <div class="preview-content">
+          <div class="top-row">
+            <img :src="selectedRobot.head.src" />
+          </div>
+          <div class="middle-row">
+            <img :src="selectedRobot.leftArm.src" class="rotate-left" />
+            <img :src="selectedRobot.torsos.src" />
+            <img :src="selectedRobot.rightArm.src" class="rotate-right" />
+          </div>
+          <div class="bottom-row">
+            <img :src="selectedRobot.bases.src" />
+          </div>
         </div>
-        <div class="middle-row">
-          <img :src="selectedRobot.leftArm.src" class="rotate-left"/>
-          <img :src="selectedRobot.torsos.src"/>
-          <img :src="selectedRobot.rightArm.src" class="rotate-right"/>
-        </div>
-        <div class="bottom-row">
-          <img :src="selectedRobot.bases.src"/>
-        </div>
-      </div>
+      </CollapsSection>
+      <button class="add-to-cart" @click="addToCart()">Add to cart</button>
     </div>
-    <button class='add-to-cart' @click="addToCart()">Add to cart</button>
     <div class="top-row">
       <!-- <div class="robot-name">
         <div class="robot-name">
           {{selectedRobot.head.title}}
           <span v-show="selectedRobot.head.onSale" class='sale'>Sale!</span>
-        </div> -->
-          <PartSelector :parts="avaliableParts.heads"
-          position="top"
-          @partSelected="part => selectedRobot.head = part"
-          />
-      </div>
+      </div>-->
+      <PartSelector
+        :parts="avaliableParts.heads"
+        position="top"
+        @partSelected="part => selectedRobot.head = part"
+      />
+    </div>
     <div class="middle-row">
-      <PartSelector :parts="avaliableParts.arms"
+      <PartSelector
+        :parts="avaliableParts.arms"
         position="left"
         @partSelected="part => selectedRobot.leftArm = part"
-        />
-      <PartSelector :parts="avaliableParts.torsos"
-       position="center"
-       @partSelected="part => selectedRobot.torsos = part"
-       />
-      <PartSelector :parts="avaliableParts.arms"
-       position="right"
+      />
+      <PartSelector
+        :parts="avaliableParts.torsos"
+        position="center"
+        @partSelected="part => selectedRobot.torsos = part"
+      />
+      <PartSelector
+        :parts="avaliableParts.arms"
+        position="right"
         @partSelected="part => selectedRobot.rightArm = part"
-       />
+      />
     </div>
     <div class="bottom-row">
-      <PartSelector :parts="avaliableParts.bases"
-       position="bottom"
+      <PartSelector
+        :parts="avaliableParts.bases"
+        position="bottom"
         @partSelected="part => selectedRobot.bases = part"
-       />
+      />
     </div>
     <div>
       <h1>Cart</h1>
@@ -53,17 +61,13 @@
         <thead>
           <tr>
             <th>Robot</th>
-            <th class='cost'>Cost</th>
+            <th class="cost">Cost</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(robot, index) in cart" :key="index">
-            <td>
-              {{robot.head.title}}
-            </td>
-            <td class='cost'>
-              {{robot.cost}}
-            </td>
+            <td>{{robot.head.title}}</td>
+            <td class="cost">{{robot.cost}}</td>
           </tr>
         </tbody>
       </table>
@@ -73,14 +77,17 @@
 
 
 <script>
+// import HomePage from '../home/HomePage'
 import avaliableParts from '../data/parts';
 import createdHook from './createdHookMixin';
 import PartSelector from './PartSelector.vue';
+import CollapsSection from '../shared/CollapsSection.vue';
 
 export default {
   name: 'RobotBuilder',
   components: {
     PartSelector,
+    CollapsSection,
   },
   data() {
     return {
@@ -101,7 +108,7 @@ export default {
     },
     headBorderStyle() {
       return {
-        border: this.selectedRobot.head.onSale ? '3px solid blue' : 'none',
+        border: this.selectedRobot.head.onSale ? '3px solid blue' : '',
       };
     },
   },
@@ -109,10 +116,10 @@ export default {
     addToCart() {
       const robot = this.selectedRobot;
       const cost = robot.head.cost
-       + robot.leftArm.cost
-       + robot.rightArm.cost
-       + robot.torsos.cost
-       + robot.bases.cost;
+        + robot.leftArm.cost
+        + robot.rightArm.cost
+        + robot.torsos.cost
+        + robot.bases.cost;
       this.cart.push(Object.assign({}, robot, { cost }));
       console.log(cost);
     },
@@ -122,16 +129,14 @@ export default {
 
 
  <style lang='scss' scoped>
-
 .part {
   position: relative;
   width: 165px;
   height: 165px;
   border: 3px solid #aaa;
-
 }
 .part {
-  img{
+  img {
     width: 165px;
   }
 }
@@ -231,7 +236,8 @@ export default {
   font-size: 16px;
 }
 
-td, th {
+td,
+th {
   text-align: left;
   padding: 5px;
   padding-right: 5px;
@@ -239,10 +245,10 @@ td, th {
 .cost {
   text-align: right;
 }
-.sale-border{
+.sale-border {
   border: 3px solid red;
 }
- .preview {
+.preview {
   position: absolute;
   top: -20px;
   right: 0;
